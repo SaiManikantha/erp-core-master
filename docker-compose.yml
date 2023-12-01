@@ -1,0 +1,36 @@
+version: '2'
+services:
+  web:
+    build: .
+    depends_on:
+      - postgresql
+    ports:
+      - "8069:8069"
+    environment:
+      - ODOO_EMAIL=user@pappaya.com
+      - ODOO_PASSWORD=pappaya
+      - POSTGRESQL_USER=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - SMTP_HOST=smtp.pappayalite.com
+      - SMTP_PORT=465
+      - SMTP_USER=noreply@pappayalite.com
+      - SMTP_PASSWORD=Pappaya@2021
+      - SMTP_PROTOCOL=tls
+      - INIT_SCHOOL_ADMIN_PASSWORD=pappp
+    volumes:
+      - odoo-web-data:/bitnami/odoo
+      - ./addons:/pappaya/addons
+  postgresql:
+    image: postgres:10
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+volumes:
+  odoo-web-data:
+  odoo-db-data:
